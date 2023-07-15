@@ -16,20 +16,24 @@ class Schichtplaner:
         ]
 
         # Wachwechsel alle 3:30 Stunden, Startzeit und Endzeit festlegen
-        self.startdatum = datetime(2023, 7, 15, 13, 0)
+        self.startdatum = datetime(2023, 7, 15, 14, 0)
         self.enddatum = datetime(2023, 7, 26, 22, 0)
         self.delta = timedelta(hours=3, minutes=30)
 
     def top_erfahrensten_segler(self, n=4):
-        self.crew = sorted(self.crew, key=lambda k: k['experience'], reverse=True)
+        self.crew = sorted(self.crew, key=lambda k: int(k['experience']), reverse=True)
         return self.crew[:n]
 
     def mindest_erfahrenen_segler(self, n=4):
-        self.crew.sort(key=lambda segler: segler['experience'])
+        self.crew.sort(key=lambda segler: int(segler['experience']))
         return self.crew[:n]
 
     def segler_mit_min_watch_count(self,wachpersonal):
         return min(wachpersonal, key=lambda segler: segler['watch_count'])
+
+    def zweit_geringsten_watch_count(self,wachpersonal):
+        wachpersonal.sort(key=lambda segler: segler['watch_count'])
+        return wachpersonal[1]
 
     def erstellen_plan(self):
         # Leere Liste für Daten erstellen
@@ -44,11 +48,12 @@ class Schichtplaner:
             wache1=self.segler_mit_min_watch_count(erfahrenes_wachpersonal)
             unerfahrenes_wachpersonal=self.mindest_erfahrenen_segler()
             wache2=self.segler_mit_min_watch_count(unerfahrenes_wachpersonal)
+            if wache1 == wache2: 
+                wache2=self.zweit_geringsten_watch_count(unerfahrenes_wachpersonal)
             data.append([current_datum, wache1["name"], wache2["name"]])
             wache1["watch_count"] += 1
             wache2["watch_count"] += 1
             current_datum += self.delta
-
         return data
 
     def speichern_csv(self, data):
