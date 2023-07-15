@@ -67,7 +67,7 @@ class Schichtplaner:
 
     def speichern_csv(self, data):
         # DataFrame erstellen und als CSV speichern
-        df = pd.DataFrame(data, columns=["UTC","WEST","CEST","Wachperson I", "Wachperson II"])
+        df = pd.DataFrame(data, columns=["UTC","WEST","CEST","Wache I", "Wache II"])
         df.to_csv("schichtplan.csv", index=False)
 if __name__ == "__main__":
     schichtplaner = Schichtplaner()
