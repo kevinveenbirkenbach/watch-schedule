@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime, timedelta
 from collections import defaultdict
+import pytz
 
 class Schichtplaner:
     def __init__(self):
@@ -50,7 +51,15 @@ class Schichtplaner:
             wache2=self.segler_mit_min_watch_count(unerfahrenes_wachpersonal)
             if wache1 == wache2: 
                 wache2=self.zweit_geringsten_watch_count(unerfahrenes_wachpersonal)
-            data.append([current_datum, wache1["name"], wache2["name"]])
+            data.append(
+                [
+                    current_datum,
+                    current_datum.astimezone(pytz.timezone('Europe/Lisbon')),
+                    current_datum.astimezone(pytz.timezone('Europe/Berlin')),
+                    wache1["name"],
+                    wache2["name"]
+                ]
+            )
             wache1["watch_count"] += 1
             wache2["watch_count"] += 1
             current_datum += self.delta
@@ -58,7 +67,7 @@ class Schichtplaner:
 
     def speichern_csv(self, data):
         # DataFrame erstellen und als CSV speichern
-        df = pd.DataFrame(data, columns=["Schichtbeginn", "Wachperson I", "Wachperson II"])
+        df = pd.DataFrame(data, columns=["UTC","WEST","CEST","Wachperson I", "Wachperson II"])
         df.to_csv("schichtplan.csv", index=False)
 if __name__ == "__main__":
     schichtplaner = Schichtplaner()
