@@ -1,6 +1,6 @@
 # Watch-Schedule
 
-This software was created by Kevin Veen-Birkenbach (kevin@veen.world, [veen.world](https://www.veen.world)) to manage the watch schedule for the turn of SY-Amy2 from Alicante to Korfu. More about the turn can be found [here](https://www.sy-amy2.de/?p=64).
+Crafted by Kevin Veen-Birkenbach ([kevin@veen.world](mailto:kevin@veen.world), [veen.world](https://www.veen.world)), this software enables efficient watch scheduling for the SY-Amy2's voyage from Alicante to Korfu. Journey specifics can be accessed [here](https://www.sy-amy2.de/?p=64). Interestingly, it was developed amidst relatively calm seas, with waves less than 1.5m high, as we sailed and motored north of Alicante.
 
 The software creates a sailing shift schedule, automatically pairing an experienced sailor with a novice sailor for each 3.5-hour shift. It provides timestamps in UTC, WEST, and CEST, and saves the final schedule in a CSV file for convenient viewing and usage. 
 
