@@ -16,6 +16,9 @@ The `crew` parameter is an array of crew members. Each crew member is represente
 * `name`: The name of the crew member.
 * `experience`: A number representing the experience level of the crew member. Higher numbers represent more experience.
 * `watch_count`: A number representing the number of watches the crew member has had. This count will be updated as the shift plan is created.
+* `alert_time`: The alert_time parameter (inside each crew member dictionary) is a number representing the number of seconds before the shift starts that an alert should be triggered. This alert will be included in the .ics file for each crew member, and will go off at the specified time before the start of each shift.
+
+Note: Alerts rely on the calendar software that the .ics file is imported into to support and enable alerts. Not all calendar software will support this feature.
 
 ### start_date
 The `start_date` parameter is a string representing the starting date and time of the shifts in the format `YYYY-MM-DD HH:MM`.
@@ -47,13 +50,13 @@ For instance:
 ```json
 {
     "crew": [
-        {"name":"Dirk","experience":"10","watch_count":0},
-        {"name":"Thomas","experience":"8","watch_count":0},
-        {"name":"Kevin","experience":"8","watch_count":0},
-        {"name":"Detlef","experience":"6","watch_count":0},
-        {"name":"Steve","experience":"2","watch_count":0},
-        {"name":"Lasse","experience":"4","watch_count":0},
-        {"name":"Stefan","experience":"5","watch_count":0}
+        {"name":"Dirk","experience":"10","watch_count":0, "alert_time": 600},
+        {"name":"Thomas","experience":"8","watch_count":0, "alert_time": 600},
+        {"name":"Kevin","experience":"8","watch_count":0, "alert_time": 600},
+        {"name":"Detlef","experience":"6","watch_count":0, "alert_time": 600},
+        {"name":"Steve","experience":"2","watch_count":0, "alert_time": 1200},
+        {"name":"Lasse","experience":"4","watch_count":0, "alert_time": 600},
+        {"name":"Stefan","experience":"5","watch_count":0, "alert_time": 900}
     ],
     "start_date":"2023-07-15 14:00",
     "end_date":"2023-07-26 22:00",

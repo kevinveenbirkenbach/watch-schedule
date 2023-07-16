@@ -2,7 +2,7 @@ import json
 import pandas as pd
 from datetime import datetime, timedelta
 import pytz
-from ics import Calendar, Event
+from ics import Calendar, Event, DisplayAlarm
 
 class ShiftPlanner:
     def __init__(self, json_file):
@@ -61,8 +61,10 @@ class ShiftPlanner:
         df.to_csv("shift_plan.csv", index=False)
     
     def create_ical(self, data):
-        for name in [person['name'] for person in self.crew]:
+        for person in self.crew:
             c = Calendar()
+            name = person['name']
+            alert_time = person['alert_time']
             for datum in data:
                 if name in datum[3:5]:
                     watch_num = "Watch I" if name == datum[3] else "Watch II"
@@ -72,6 +74,8 @@ class ShiftPlanner:
                     e.description = f"\nDescription: {self.description}\n"
                     e.location = f"{self.depature_location} to {self.arrival_location}"
                     e.duration = timedelta(hours=3, minutes=30)
+                    alarm = DisplayAlarm(trigger=timedelta(seconds=-alert_time))
+                    e.alarms.append(alarm)
                     c.events.add(e)
             with open(f'{name}.ics', 'w') as my_file:
                 my_file.writelines(c)

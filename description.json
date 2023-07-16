@@ -1,12 +1,12 @@
 {
     "crew": [
-        {"name":"Dirk","experience":"10","watch_count":0},
-        {"name":"Thomas","experience":"8","watch_count":0},
-        {"name":"Kevin","experience":"8","watch_count":0},
-        {"name":"Detlef","experience":"6","watch_count":0},
-        {"name":"Steve","experience":"2","watch_count":0},
-        {"name":"Lasse","experience":"4","watch_count":0},
-        {"name":"Stefan","experience":"5","watch_count":0}
+        {"name":"Dirk","experience":"10","watch_count":0, "alert_time": 600},
+        {"name":"Thomas","experience":"8","watch_count":0, "alert_time": 600},
+        {"name":"Kevin","experience":"8","watch_count":0, "alert_time": 600},
+        {"name":"Detlef","experience":"6","watch_count":0, "alert_time": 600},
+        {"name":"Steve","experience":"2","watch_count":0, "alert_time": 1200},
+        {"name":"Lasse","experience":"4","watch_count":0, "alert_time": 600},
+        {"name":"Stefan","experience":"5","watch_count":0, "alert_time": 900}
     ],
     "start_date":"2023-07-15 14:00",
     "end_date":"2023-07-26 22:00",
