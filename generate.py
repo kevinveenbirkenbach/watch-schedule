@@ -44,9 +44,9 @@ class ShiftPlanner:
                 watch2 = self.second_lowest_watch_count(inexperienced_watch_staff)
             data.append(
                 [
-                    current_date,
-                    current_date.astimezone(pytz.timezone('Europe/Lisbon')),
-                    current_date.astimezone(pytz.timezone('Europe/Berlin')),
+                    current_date.strftime("%Y-%m-%d %H:%M"),
+                    (current_date + timedelta(hours=1)).strftime("%Y-%m-%d %H:%M"),
+                    (current_date + timedelta(hours=2)).strftime("%Y-%m-%d %H:%M"),
                     watch1["name"],
                     watch2["name"]
                 ]
@@ -70,7 +70,7 @@ class ShiftPlanner:
                     watch_num = "Watch I" if name == datum[3] else "Watch II"
                     e = Event()
                     e.name = f"{watch_num}({name}) on {self.ship_name}"
-                    e.begin = datum[0].strftime("%Y%m%d %H%M%S")
+                    e.begin = datetime.strptime(datum[0], "%Y-%m-%d %H:%M")
                     e.description = f"{self.description}"
                     e.location = f"{self.depature_location} to {self.arrival_location}"
                     e.duration = timedelta(hours=3, minutes=30)
