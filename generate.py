@@ -8,12 +8,16 @@ class ShiftPlanner:
     def __init__(self, json_file):
         with open(json_file) as f:
             data = json.load(f)
-        
+
         self.crew = data['crew']
         self.start_date = datetime.strptime(data['start_date'], "%Y-%m-%d %H:%M")
         self.end_date = datetime.strptime(data['end_date'], "%Y-%m-%d %H:%M")
         hours, minutes = map(int, data['shiftduration'].split(':'))
         self.delta = timedelta(hours=hours, minutes=minutes)
+        self.description = data['description']
+        self.depature_location = data['depature_location']
+        self.arrival_location = data['arrival_location']
+        self.ship_name = data['ship_name']
 
     def top_most_experienced_sailors(self, n=4):
         return sorted(self.crew, key=lambda k: int(k['experience']), reverse=True)[:n]
@@ -63,7 +67,10 @@ class ShiftPlanner:
                 if name in datum[3:5]:  
                     e = Event()
                     e.name = "Watch"
-                    e.begin = datum[0].strftime("%Y%m%d %H%M%S")  
+                    e.begin = datum[0].strftime("%Y%m%d %H%M%S")
+                    e.description = self.description
+                    e.location = f"{self.depature_location} to {self.arrival_location}"
+                    e.description += f"\nShip: {self.ship_name}"
                     e.duration = timedelta(hours=3, minutes=30)
                     c.events.add(e)
             with open(f'{name}.ics', 'w') as my_file:

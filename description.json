@@ -10,5 +10,9 @@
     ],
     "start_date":"2023-07-15 14:00",
     "end_date":"2023-07-26 22:00",
-    "shiftduration":"03:30"
+    "shiftduration":"03:30",
+    "description":"The turn description can be found here: https://www.sy-amy2.de/?p=64",
+    "depature_location":"Alicante",
+    "arrival_location":"Brest",
+    "ship_name":"SY-Amy2"
 }
