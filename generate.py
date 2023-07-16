@@ -1,14 +1,19 @@
+import json
 import pandas as pd
 from datetime import datetime, timedelta
 import pytz
 from ics import Calendar, Event
 
 class ShiftPlanner:
-    def __init__(self, crew, start_date, end_date, delta):
-        self.crew = crew
-        self.start_date = start_date
-        self.end_date = end_date
-        self.delta = delta
+    def __init__(self, json_file):
+        with open(json_file) as f:
+            data = json.load(f)
+        
+        self.crew = data['crew']
+        self.start_date = datetime.strptime(data['start_date'], "%Y-%m-%d %H:%M")
+        self.end_date = datetime.strptime(data['end_date'], "%Y-%m-%d %H:%M")
+        hours, minutes = map(int, data['shiftduration'].split(':'))
+        self.delta = timedelta(hours=hours, minutes=minutes)
 
     def top_most_experienced_sailors(self, n=4):
         return sorted(self.crew, key=lambda k: int(k['experience']), reverse=True)[:n]
@@ -65,20 +70,7 @@ class ShiftPlanner:
                 my_file.writelines(c)
 
 if __name__ == "__main__":
-    crew = [
-        {"name":"Dirk","experience":"10","watch_count":0},
-        {"name":"Thomas","experience":"8","watch_count":0},
-        {"name":"Kevin","experience":"8","watch_count":0},
-        {"name":"Detlef","experience":"6","watch_count":0},
-        {"name":"Steve","experience":"2","watch_count":0},
-        {"name":"Lasse","experience":"4","watch_count":0},
-        {"name":"Stefan","experience":"5","watch_count":0}
-    ]
-    start_date = datetime(2023, 7, 15, 14, 0)
-    end_date = datetime(2023, 7, 26, 22, 0)
-    delta = timedelta(hours=3, minutes=30)
-
-    shift_planner = ShiftPlanner(crew, start_date, end_date, delta)
+    shift_planner = ShiftPlanner("description.json")
     data = shift_planner.create_plan()
     shift_planner.save_csv(data)
     shift_planner.create_ical(data)
