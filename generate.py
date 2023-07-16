@@ -64,13 +64,13 @@ class ShiftPlanner:
         for name in [person['name'] for person in self.crew]:
             c = Calendar()
             for datum in data:
-                if name in datum[3:5]:  
+                if name in datum[3:5]:
+                    watch_num = "Watch I" if name == datum[3] else "Watch II"
                     e = Event()
-                    e.name = "Watch"
+                    e.name = f"{watch_num}({name}) on {self.ship_name}"
                     e.begin = datum[0].strftime("%Y%m%d %H%M%S")
-                    e.description = self.description
+                    e.description = f"\nDescription: {self.description}\n"
                     e.location = f"{self.depature_location} to {self.arrival_location}"
-                    e.description += f"\nShip: {self.ship_name}"
                     e.duration = timedelta(hours=3, minutes=30)
                     c.events.add(e)
             with open(f'{name}.ics', 'w') as my_file:
