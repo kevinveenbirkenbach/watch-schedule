@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from collections import defaultdict
 import pytz
+from ics import Calendar, Event
 
 class Schichtplaner:
     def __init__(self):
@@ -69,8 +70,26 @@ class Schichtplaner:
         # DataFrame erstellen und als CSV speichern
         df = pd.DataFrame(data, columns=["UTC","WEST","CEST","Wache I", "Wache II"])
         df.to_csv("schichtplan.csv", index=False)
+    
+    def erstellen_ical(self, data):
+        # Ein ics-Kalender für jede Person erstellen
+        crew_names = [person['name'] for person in self.crew]
+        for name in crew_names:
+            c = Calendar()
+            for datum in data:
+                if name in datum[3:5]:  # Wache I oder Wache II
+                    e = Event()
+                    e.name = "Wache"
+                    e.begin = datum[0].strftime("%Y%m%d %H%M%S")  # Datum und Uhrzeit formatieren
+                    e.duration = timedelta(hours=3, minutes=30)
+                    c.events.add(e)
+            # Speichern Sie die ics-Datei mit dem Namen der Person
+            with open(f'{name}.ics', 'w') as my_file:
+                my_file.writelines(c)
+
 if __name__ == "__main__":
     schichtplaner = Schichtplaner()
     data = schichtplaner.erstellen_plan()
     schichtplaner.speichern_csv(data)
+    schichtplaner.erstellen_ical(data)
     print(schichtplaner.crew)
