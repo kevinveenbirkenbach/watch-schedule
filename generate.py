@@ -71,7 +71,7 @@ class ShiftPlanner:
                     e = Event()
                     e.name = f"{watch_num}({name}) on {self.ship_name}"
                     e.begin = datum[0].strftime("%Y%m%d %H%M%S")
-                    e.description = f"\nDescription: {self.description}\n"
+                    e.description = f"{self.description}"
                     e.location = f"{self.depature_location} to {self.arrival_location}"
                     e.duration = timedelta(hours=3, minutes=30)
                     alarm = DisplayAlarm(trigger=timedelta(seconds=-alert_time))
